@@ -40,6 +40,4 @@ exit 0
 
 
 service egecho start
-
 nc -v hostname 5000 # to check from remote machine
-
