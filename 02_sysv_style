@@ -1,0 +1,45 @@
+yum install nc -y
+echo '#!/bin/bash' > /home/egor/serv.sh #создаем скрипт запускающий эхо сервер на 5000 порту
+echo "nc -lk -p 5000 -c 'xargs -n1 echo'" >> /home/egor/serv.sh
+chmod +x /home/egor/serv.sh
+cd /etc/init.d/
+vim egecho
+
+
+#!/bin/bash
+# chkconfig: 2345 20 80
+# description: Egor Echo Service Task
+# Source function library.
+. /etc/init.d/functions
+
+case "$1" in
+start)
+        /home/egor/serv.sh &
+        echo $!>/var/run/egecho.pid
+        ;;
+stop)
+        kill 'cat /var/run/egecho.pid'
+        rm /var/run/checker.pid
+        ;;
+restart)
+        $0 stop
+        $0 start
+        ;;
+status)
+        if [ -e /var/run/egecho.pid ]; then
+                echo egecho is running, pid='cat /var/run/egecho.pid'
+        else
+                echo checker is NOT running
+                exit 1
+        fi
+        ;;
+*)
+        echo "Usage: $0 {start|stop|status|restart}"
+esac
+exit 0
+
+
+service egecho start
+
+nc -v hostname 5000 # to check from remote machine
+
