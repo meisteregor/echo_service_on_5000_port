@@ -1,5 +1,5 @@
 yum install nc -y
-echo '#!/bin/bash' > /home/egor/serv.sh #создаем скрипт запускающий эхо сервер на 5000 порту
+echo '#!/bin/bash' > /home/egor/serv.sh
 echo "nc -lk -p 5000 -c 'xargs -n1 echo'" >> /home/egor/serv.sh
 chmod +x /home/egor/serv.sh
 cd /etc/init.d/
